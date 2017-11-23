@@ -221,7 +221,7 @@
   //render overlay
   if (overlayConfig) {
     RCTRootView *overlayView = [[RCTRootView alloc] initWithBridge:bridge
-                                                        moduleName:overlayConfig[@"component"]
+                                                        moduleName:overlayConfig[@"screen"]
                                                  initialProperties:overlayConfig[@"passProps"]];
     
     id overlayPositions = overlayConfig[@"position"];

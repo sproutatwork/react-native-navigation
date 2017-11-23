@@ -36,6 +36,7 @@ import com.reactnativenavigation.screens.ScreenStack;
 import com.reactnativenavigation.utils.Task;
 import com.reactnativenavigation.utils.ViewUtils;
 import com.reactnativenavigation.views.BottomTabs;
+import com.reactnativenavigation.views.ContentView;
 import com.reactnativenavigation.views.LightBox;
 import com.reactnativenavigation.views.SideMenu;
 import com.reactnativenavigation.views.SideMenu.Side;
@@ -81,6 +82,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         createSnackbarContainer();
         showInitialScreenStack();
         setInitialTabIndex();
+        addOverlay();
     }
 
     private void setInitialTabIndex() {
@@ -125,6 +127,19 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     private void createBottomTabs() {
         bottomTabs = new BottomTabs(getContext());
         bottomTabs.addTabs(params.tabParams, this);
+    }
+
+    private boolean addOverlay() {
+        if (params.overlayParams == null) {
+            return false;
+        }
+        ContentView overlayView = new ContentView(getContext(), params.overlayParams.screenId, params.overlayParams.navigationParams);
+        LayoutParams lp2 = new LayoutParams(params.overlayParams.width, params.overlayParams.height);
+        overlayView.setX(params.overlayParams.left);
+        overlayView.setY(params.overlayParams.top);
+        addView(overlayView, lp2);
+
+        return true;
     }
 
     private void addBottomTabs() {
