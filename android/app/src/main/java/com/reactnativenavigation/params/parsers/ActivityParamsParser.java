@@ -8,11 +8,11 @@ import com.reactnativenavigation.params.SideMenuParams;
 import com.reactnativenavigation.views.SideMenu;
 
 public class ActivityParamsParser extends Parser {
-    public static String PARAM_SCREEN = "screen";
-    public static String PARAM_TABS = "tabs";
-    public static String PARAM_SIDE_MENU = "sideMenu";
-    public static String PARAM_OVERLAY = "overlay";
-    public static String PARAM_ANIMATE_SHOW = "animateShow";
+    private static final String PARAM_SCREEN = "screen";
+    private static final String PARAM_TABS = "tabs";
+    private static final String PARAM_SIDE_MENU = "sideMenu";
+    private static final String PARAM_OVERLAY = "overlay";
+    private static final String PARAM_ANIMATE_SHOW = "animateShow";
 
     public static ActivityParams parse(Bundle params) {
         ActivityParams result = new ActivityParams();
