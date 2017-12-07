@@ -78,11 +78,11 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         createSideMenu();
         createBottomTabs();
         addBottomTabs();
+        addOverlay();
         addScreenStacks();
         createSnackbarContainer();
         showInitialScreenStack();
         setInitialTabIndex();
-        addOverlay();
     }
 
     private void setInitialTabIndex() {
@@ -137,7 +137,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         LayoutParams lp2 = new LayoutParams(params.overlayParams.width, params.overlayParams.height);
         overlayView.setX(params.overlayParams.left);
         overlayView.setY(params.overlayParams.top);
-        addView(overlayView, lp2);
+        getScreenStackParent().addView(overlayView, lp2);
 
         return true;
     }
