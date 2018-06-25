@@ -1,13 +1,16 @@
 package com.reactnativenavigation.layouts;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -55,6 +58,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
     private ActivityParams params;
     private SnackbarAndFabContainer snackbarAndFabContainer;
     private BottomTabs bottomTabs;
+    private ContentView overlayView;
     private ScreenStack[] screenStacks;
     private final SideMenuParams leftSideMenuParams;
     private final SideMenuParams rightSideMenuParams;
@@ -136,10 +140,15 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         if (params.overlayParams == null) {
             return false;
         }
-        ContentView overlayView = new ContentView(getContext(), params.overlayParams.screenId, params.overlayParams.navigationParams);
-        LayoutParams lp2 = new LayoutParams(params.overlayParams.width, params.overlayParams.height);
-        overlayView.setX(params.overlayParams.left);
-        overlayView.setY(params.overlayParams.top);
+        overlayView = new ContentView(getContext(), params.overlayParams.screenId, params.overlayParams.navigationParams);
+        LayoutParams lp2 = new LayoutParams((int) (params.overlayParams.width * getResources().getDisplayMetrics().density), WRAP_CONTENT);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
+
+        overlayView.setX(params.overlayParams.left * getResources().getDisplayMetrics().density);
+        overlayView.setY(params.overlayParams.top * getResources().getDisplayMetrics().density);
+
         getScreenStackParent().addView(overlayView, lp2);
 
         return true;
@@ -379,7 +388,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private boolean hasBackgroundColor(StyleParams params) {
         return params.screenBackgroundColor != null &&
-            params.screenBackgroundColor.hasColor();
+                params.screenBackgroundColor.hasColor();
     }
 
     private void setStyleFromScreen(StyleParams params) {
@@ -388,6 +397,9 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
             alignSnackbarContainerWithBottomTabs((LayoutParams) snackbarAndFabContainer.getLayoutParams(), params);
         if (hasBackgroundColor(params)) {
             asView().setBackgroundColor(params.screenBackgroundColor.getColor());
+        }
+        if (overlayView != null) {
+            overlayView.setElevation(params.bottomTabsHidden ? 0F : 100F);
         }
     }
 
@@ -410,7 +422,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         performOnStack(params.getNavigatorId(), new Task<ScreenStack>() {
             @Override
             public void run(ScreenStack stack) {
-            stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
+                stack.pop(params.animateScreenTransitions, params.timestamp, new ScreenStack.OnScreenPop() {
                     @Override
                     public void onScreenPopAnimationEnd() {
                         setBottomTabsStyleFromCurrentScreen();
@@ -474,12 +486,12 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         } catch (ScreenStackNotFoundException e) {
             if (onPushComplete != null) {
                 onPushComplete.reject("Navigation", "Could not perform action on stack [" + navigatorId + "]." +
-                                                    "This should not have happened, it probably means a navigator action" +
-                                                    "was called from an unmounted tab.");
+                        "This should not have happened, it probably means a navigator action" +
+                        "was called from an unmounted tab.");
             }
             Log.e("Navigation", "Could not perform action on stack [" + navigatorId + "]." +
-                                "This should not have happened, it probably means a navigator action" +
-                                "was called from an unmounted tab.");
+                    "This should not have happened, it probably means a navigator action" +
+                    "was called from an unmounted tab.");
         }
     }
 
