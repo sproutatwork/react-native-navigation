@@ -230,6 +230,7 @@ const NSInteger kLightBoxTag = 0x101010;
     RCCLightBoxView *lightBox = [[RCCLightBoxView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) params:params];
     lightBox.tag = kLightBoxTag;
     [viewController.view addSubview:lightBox];
+    lightBox.layer.zPosition = 3;
     [lightBox showAnimated];
 }
 

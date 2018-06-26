@@ -87,6 +87,9 @@ RCTRootView *overlayView;
 //  tabFrame.size.height = height;
 //  tabFrame.origin.y = self.view.frame.size.height - height;
 //  self.tabBar.frame = tabFrame;
+    if (!overlayView.hidden) {
+        [self.view bringSubviewToFront:overlayView];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
