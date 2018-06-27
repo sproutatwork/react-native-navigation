@@ -18,6 +18,13 @@
 
 RCTRootView *overlayView;
 
+- (NSMutableArray *)isInterceptArr{
+  if (!_isInterceptArr) {
+    _isInterceptArr = [NSMutableArray array];
+  }
+  return _isInterceptArr;
+}
+
 -(UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return [self supportedControllerOrientations];
 }
@@ -55,7 +62,9 @@ RCTRootView *overlayView;
         [RCCTabBarController sendScreenTabPressedEvent:viewController body:nil];
     }
 
-
+    if([self.isInterceptArr[[tabBarController.viewControllers indexOfObject:viewController]] boolValue]){
+        return NO;
+    };
 
     return YES;
 }
@@ -158,6 +167,12 @@ RCTRootView *overlayView;
 
     // go over all the tab bar items
     for (NSDictionary *tabItemLayout in children) {
+        // this is for disabled tabs
+        if (tabItemLayout[@"props"] && tabItemLayout[@"props"][@"isIntercept"]) {
+            [self.isInterceptArr addObject:tabItemLayout[@"props"][@"isIntercept"]];
+        } else {
+            [self.isInterceptArr addObject:@(false)];
+        }
         // make sure the layout is valid
         if (![tabItemLayout[@"type"] isEqualToString:@"TabBarControllerIOS.Item"]) continue;
         if (!tabItemLayout[@"props"]) continue;

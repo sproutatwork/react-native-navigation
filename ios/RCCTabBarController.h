@@ -7,6 +7,7 @@
 - (void)performAction:(NSString*)performAction actionParams:(NSDictionary*)actionParams bridge:(RCTBridge *)bridge completion:(void (^)(void))completion;
 - (void)handleOverlayButton:(BOOL)toggle;
 
+@property(nonatomic,copy)NSMutableArray * isInterceptArr;
 @property (nonatomic) BOOL tabBarHidden;
 
 @end

@@ -371,6 +371,8 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         if (bottomTabs.getCurrentItem() != index) {
             bottomTabs.setCurrentItemWithoutInvokingTabSelectedListener(index);
             switchTab(index, NavigationType.SwitchToTab);
+        } else {
+            bottomTabs.setCurrentItem(index);
         }
     }
 
@@ -381,6 +383,10 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
                 selectBottomTabByTabIndex(getScreenStackIndex(navigatorId));
             }
         });
+    }
+
+    private boolean isTabIntercept(int position) {
+        return params.tabParams.get(position).isIntercept;
     }
 
     private boolean hasBackgroundColor(StyleParams params) {
@@ -516,7 +522,10 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
 
         final int unselectedTabIndex = currentStackIndex;
-        sendTabSelectedEventToJs(position, unselectedTabIndex);
+        if(isTabIntercept(position)) {
+            sendTabSelectedEventToJs(position, unselectedTabIndex);
+            return false;
+        }
         switchTab(position, NavigationType.BottomTabSelected);
         return true;
     }

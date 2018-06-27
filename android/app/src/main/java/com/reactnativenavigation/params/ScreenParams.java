@@ -7,6 +7,7 @@ public class ScreenParams extends BaseScreenParams {
     public String tabLabel;
     public List<PageParams> topTabParams;
     public List<String> sharedElementsTransitions;
+    public boolean isIntercept;
     public List<ScreenParams> screens = Collections.EMPTY_LIST; // used to init a stack with multiple screens
 
     public boolean hasTopTabs() {
