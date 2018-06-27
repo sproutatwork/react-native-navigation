@@ -82,8 +82,8 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         createSideMenu();
         createBottomTabs();
         addBottomTabs();
-        addOverlay();
         addScreenStacks();
+        addOverlay();
         createSnackbarContainer();
         showInitialScreenStack();
         setInitialTabIndex();
@@ -136,22 +136,19 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         bottomTabs.addTabs(params.tabParams, this);
     }
 
-    private boolean addOverlay() {
-        if (params.overlayParams == null) {
-            return false;
+    private void addOverlay() {
+        if (params.overlayParams != null) {
+              overlayView = new ContentView(getContext(), params.overlayParams.screenId, params.overlayParams.navigationParams);
+            LayoutParams lp2 = new LayoutParams((int) (params.overlayParams.width * getResources().getDisplayMetrics().density), WRAP_CONTENT);
+
+            DisplayMetrics metrics = new DisplayMetrics();
+            ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
+
+            overlayView.setX(params.overlayParams.left * getResources().getDisplayMetrics().density);
+            overlayView.setY(params.overlayParams.top * getResources().getDisplayMetrics().density);
+
+            getScreenStackParent().addView(overlayView, lp2);
         }
-        overlayView = new ContentView(getContext(), params.overlayParams.screenId, params.overlayParams.navigationParams);
-        LayoutParams lp2 = new LayoutParams((int) (params.overlayParams.width * getResources().getDisplayMetrics().density), WRAP_CONTENT);
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getMetrics(metrics);
-
-        overlayView.setX(params.overlayParams.left * getResources().getDisplayMetrics().density);
-        overlayView.setY(params.overlayParams.top * getResources().getDisplayMetrics().density);
-
-        getScreenStackParent().addView(overlayView, lp2);
-
-        return true;
     }
 
     private void addBottomTabs() {
