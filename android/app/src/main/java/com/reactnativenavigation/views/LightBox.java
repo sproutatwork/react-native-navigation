@@ -148,7 +148,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
             animatorSet.playTogether(lightBoxAlpha, yTranslation);
             animatorSet.start();
         } else {
-            ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0, 1).setDuration(120);
+            ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0, 1).setDuration(250);
             lightBoxAlpha.addListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -182,7 +182,7 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
             });
             allAnimators.start();
         } else {
-            ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0).setDuration(100);
+            ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0).setDuration(250);
 
             AnimatorSet allAnimators = new AnimatorSet();
             allAnimators.playSequentially(lightBoxAlpha);

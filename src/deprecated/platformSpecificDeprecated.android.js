@@ -566,6 +566,7 @@ function showLightBox(params) {
     }
   }
   params.tapBackgroundToDismiss = _.get(params, 'style.tapBackgroundToDismiss') || false;
+  params.disableAffineTransform = _.get(params, 'style.disableAffineTransform') || false;
   newPlatformSpecific.showLightBox(params);
 }
 
