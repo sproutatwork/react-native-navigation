@@ -31,11 +31,13 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     private ContentView content;
     private RelativeLayout lightBox;
     private boolean cancelable;
+    private boolean isTranslateAnimationDisabled;
 
     public LightBox(AppCompatActivity activity, Runnable onDismissListener, LightBoxParams params) {
         super(activity, R.style.LightBox);
         this.onDismissListener = onDismissListener;
         this.cancelable = !params.overrideBackPress;
+        this.isTranslateAnimationDisabled = params.disableAffineTransform;
         setOnDismissListener(this);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         createContent(activity, params);
@@ -130,39 +132,67 @@ public class LightBox extends Dialog implements DialogInterface.OnDismissListene
     }
 
     private void animateShow() {
-        ObjectAnimator yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_Y, 80, 0).setDuration(400);
-        yTranslation.setInterpolator(new FastOutSlowInInterpolator());
-        yTranslation.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                content.setAlpha(1);
-            }
-        });
+        if (!this.isTranslateAnimationDisabled) {
+            ObjectAnimator yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_Y, 80, 0).setDuration(400);
+            yTranslation.setInterpolator(new FastOutSlowInInterpolator());
+            yTranslation.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    content.setAlpha(1);
+                }
+            });
 
-        ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0, 1).setDuration(70);
+            ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0, 1).setDuration(70);
 
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(lightBoxAlpha, yTranslation);
-        animatorSet.start();
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(lightBoxAlpha, yTranslation);
+            animatorSet.start();
+        } else {
+            ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0, 1).setDuration(120);
+            lightBoxAlpha.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    content.setAlpha(1);
+                }
+            });
+
+            AnimatorSet animatorSet = new AnimatorSet();
+            animatorSet.playTogether(lightBoxAlpha);
+            animatorSet.start();
+        }
     }
 
     private void animateHide() {
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(content, View.ALPHA, 0);
-        ObjectAnimator yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_Y, 60);
-        AnimatorSet contentAnimators = new AnimatorSet();
-        contentAnimators.playTogether(alpha, yTranslation);
-        contentAnimators.setDuration(150);
+        if (!this.isTranslateAnimationDisabled) {
+            ObjectAnimator alpha = ObjectAnimator.ofFloat(content, View.ALPHA, 0);
+            ObjectAnimator yTranslation = ObjectAnimator.ofFloat(content, View.TRANSLATION_Y, 60);
+            AnimatorSet contentAnimators = new AnimatorSet();
+            contentAnimators.playTogether(alpha, yTranslation);
+            contentAnimators.setDuration(150);
 
-        ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0).setDuration(100);
+            ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0).setDuration(100);
 
-        AnimatorSet allAnimators = new AnimatorSet();
-        allAnimators.playSequentially(contentAnimators, lightBoxAlpha);
-        allAnimators.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                destroy();
-            }
-        });
-        allAnimators.start();
+            AnimatorSet allAnimators = new AnimatorSet();
+            allAnimators.playSequentially(contentAnimators, lightBoxAlpha);
+            allAnimators.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    destroy();
+                }
+            });
+            allAnimators.start();
+        } else {
+            ObjectAnimator lightBoxAlpha = ObjectAnimator.ofFloat(lightBox, View.ALPHA, 0).setDuration(100);
+
+            AnimatorSet allAnimators = new AnimatorSet();
+            allAnimators.playSequentially(lightBoxAlpha);
+            allAnimators.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    destroy();
+                }
+            });
+            allAnimators.start();
+        }
     }
 }

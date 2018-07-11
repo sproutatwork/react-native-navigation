@@ -5,6 +5,7 @@ public class LightBoxParams {
     public NavigationParams navigationParams;
     public StyleParams.Color backgroundColor;
     public boolean tapBackgroundToDismiss;
+    public boolean disableAffineTransform;
     public boolean overrideBackPress;
     public int adjustSoftInput;
 }

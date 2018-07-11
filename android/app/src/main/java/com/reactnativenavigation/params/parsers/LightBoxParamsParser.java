@@ -22,6 +22,7 @@ public class LightBoxParamsParser extends Parser {
         result.navigationParams = new NavigationParams(params.getBundle("navigationParams"));
         result.backgroundColor = getColor(params, "backgroundColor");
         result.tapBackgroundToDismiss = params.getBoolean("tapBackgroundToDismiss");
+        result.disableAffineTransform = params.getBoolean("disableAffineTransform");
         result.overrideBackPress = params.getBoolean("overrideBackPress");
         result.adjustSoftInput = Adjustment.fromString(params.getString("adjustSoftInput")).value;
         return result;
