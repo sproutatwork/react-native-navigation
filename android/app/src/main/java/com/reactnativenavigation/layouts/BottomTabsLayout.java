@@ -403,6 +403,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
         if (overlayView != null) {
             overlayView.setElevation(params.bottomTabsHidden ? 0F : 100F);
+            overlayView.setVisibility(params.bottomTabsHidden ? View.GONE : View.VISIBLE);
         }
     }
 
