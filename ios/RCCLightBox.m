@@ -175,7 +175,7 @@ const NSInteger kLightBoxTag = 0x101010;
     if (!self.disableAffineTransform) {
       self.reactView.transform = CGAffineTransformMakeTranslation(0, 100);
     }
-    self.reactView.alpha = 0;
+    self.reactView.alpha = !self.disableAffineTransform ? 1 : 0;
     [UIView animateWithDuration:0.6 delay:0.2 usingSpringWithDamping:0.65 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^()
     {
         if (!self.disableAffineTransform) {
@@ -196,7 +196,7 @@ const NSInteger kLightBoxTag = 0x101010;
         if (!self.disableAffineTransform) {
           self.reactView.transform = CGAffineTransformMakeTranslation(0, 80);
         }
-        self.reactView.alpha = 0;
+        self.reactView.alpha = !self.disableAffineTransform ? 1 : 0;
     }
                      completion:^(BOOL finished)
     {
