@@ -11,7 +11,6 @@
 - (void)configureNextLayoutAnimation:(NSDictionary *)config
                         withCallback:(RCTResponseSenderBlock)callback
                        errorCallback:(__unused RCTResponseSenderBlock)errorCallback;
-
 @end
 
 @implementation RCCTabBarController
@@ -31,6 +30,15 @@ RCTRootView *overlayView;
 
 - (void)handleOverlayButton:(BOOL)toggle {
     overlayView.hidden = toggle;
+}
+
+- (void)lightBoxAppearinWithOverlay {
+    self._beforeLightBoxVisibility = overlayView.hidden;
+    overlayView.hidden = YES;
+}
+
+- (void)lightBoxDisappearinWithOverlay {
+    overlayView.hidden = self._beforeLightBoxVisibility;
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
@@ -86,12 +94,12 @@ RCTRootView *overlayView;
 
 - (void)viewWillLayoutSubviews {
 //  int height = 75;
-
+//
 //  CGSize screenSize = [[UIScreen mainScreen] bounds].size;
 //  if (screenSize.height == 812) {
 //    height = 85;
 //  }
-
+//
 //  CGRect tabFrame = self.tabBar.frame; //self.TabBar is IBOutlet of your TabBar
 //  tabFrame.size.height = height;
 //  tabFrame.origin.y = self.view.frame.size.height - height;

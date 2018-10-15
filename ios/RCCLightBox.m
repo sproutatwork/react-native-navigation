@@ -1,4 +1,5 @@
 #import "RCCLightBox.h"
+#import "RCCTabBarController.h"
 #import "RCCManager.h"
 #import <React/RCTRootView.h>
 #import <React/RCTRootViewDelegate.h>
@@ -233,7 +234,7 @@ const NSInteger kLightBoxTag = 0x101010;
 
 +(void)showWithParams:(NSDictionary*)params
 {
-    UIViewController *viewController = RCTPresentedViewController();
+   UIViewController *viewController = RCTPresentedViewController();
    RCCLightBoxView *previousLightBox = [viewController.view viewWithTag:kLightBoxTag];
     if (previousLightBox != nil && !previousLightBox.isDismissing)
     {
@@ -242,8 +243,9 @@ const NSInteger kLightBoxTag = 0x101010;
 
     RCCLightBoxView *lightBox = [[RCCLightBoxView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height) params:params];
     lightBox.tag = kLightBoxTag;
+    
     [viewController.view addSubview:lightBox];
-    lightBox.layer.zPosition = 3;
+    [(RCCTabBarController*)viewController lightBoxAppearinWithOverlay];
     [lightBox showAnimated];
 }
 
@@ -253,6 +255,8 @@ const NSInteger kLightBoxTag = 0x101010;
     RCCLightBoxView *lightBox = [viewController.view viewWithTag:kLightBoxTag];
     if (lightBox != nil)
     {
+        [(RCCTabBarController*)viewController lightBoxDisappearinWithOverlay];
+        
         [lightBox dismissAnimated];
     }
 }
