@@ -245,7 +245,9 @@ const NSInteger kLightBoxTag = 0x101010;
     lightBox.tag = kLightBoxTag;
     
     [viewController.view addSubview:lightBox];
-    [(RCCTabBarController*)viewController lightBoxAppearinWithOverlay];
+    if ([viewController isKindOfClass:[RCCTabBarController class]]) {
+        [(RCCTabBarController*)viewController lightBoxAppearinWithOverlay];
+    }
     [lightBox showAnimated];
 }
 
@@ -255,7 +257,9 @@ const NSInteger kLightBoxTag = 0x101010;
     RCCLightBoxView *lightBox = [viewController.view viewWithTag:kLightBoxTag];
     if (lightBox != nil)
     {
-        [(RCCTabBarController*)viewController lightBoxDisappearinWithOverlay];
+        if ([viewController isKindOfClass:[RCCTabBarController class]]) {
+            [(RCCTabBarController*)viewController lightBoxDisappearinWithOverlay];
+        }
         
         [lightBox dismissAnimated];
     }
