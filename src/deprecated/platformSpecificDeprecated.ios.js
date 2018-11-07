@@ -317,6 +317,10 @@ function _mergeScreenSpecificSettings(screenID, screenInstanceID, params) {
       navigatorButtons.rightButtons[i].onPress = navigatorEventID;
     }
   }
+
+  navigatorButtons.backButton = { id: 'backButton' }
+  navigatorButtons.backButton.onPress = navigatorEventID;
+
   return {navigatorStyle, navigatorButtons, navigatorEventID};
 }
 
@@ -369,6 +373,8 @@ function navigatorPush(navigator, params) {
     style: navigatorStyle,
     backButtonTitle: params.backButtonTitle,
     backButtonHidden: params.backButtonHidden,
+    backButtonIntercept: params.backButtonIntercept,
+    backButton: navigatorButtons.backButton,
     leftButtons: navigatorButtons.leftButtons,
     rightButtons: navigatorButtons.rightButtons,
     previewViewID: previewViewID,
@@ -431,6 +437,7 @@ function navigatorResetTo(navigator, params) {
     animationType: params.animationType,
     passProps: passProps,
     style: navigatorStyle,
+    backButton: navigatorButtons.backButton,
     leftButtons: navigatorButtons.leftButtons,
     rightButtons: navigatorButtons.rightButtons
   });
