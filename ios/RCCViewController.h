@@ -15,6 +15,8 @@ extern NSString* const RCCViewControllerCancelReactTouchesNotification;
 
 @property (nonatomic) NSMutableDictionary *navigatorStyle;
 @property (nonatomic) BOOL navBarHidden;
+@property (strong, nonnull) UIBarButtonItem *backButtonItem;
+@property (nonatomic) BOOL shouldInterceptBackButton;
 @property (nonatomic, strong) NSString *controllerId;
 @property (nonatomic, strong) NSString *commandType;
 @property (nonatomic, strong) NSString *timestamp;

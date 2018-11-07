@@ -278,6 +278,10 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     [self sendGlobalScreenEvent:@"didAppear" endTimestampString:[self getTimestampString] shouldReset:YES];
     [self sendScreenChangedEvent:@"didAppear"];
     
+    // If we're intercepting the back button to perform some kind of action then we don't want users to be able to swipe back
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = !self.shouldInterceptBackButton;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -741,6 +745,16 @@ const NSInteger TRANSPARENT_NAVBAR_TAG = 78264803;
     
     if (!self._hidesBottomBarWhenPushed) return NO;
     return (self.navigationController.topViewController == self) && ![(RCCTabBarController*)self.tabBarController tabBarHidden];
+}
+
+- (BOOL)navigationShouldPopOnBackButton {
+    RCCNavigationController *navController = (RCCNavigationController *)self.navigationController;
+    RCCViewController *viewController = (RCCViewController *)navController.visibleViewController;
+    if (!viewController.shouldInterceptBackButton) return YES;
+    
+    [navController onPop];
+    
+    return NO;
 }
 
 - (BOOL)prefersStatusBarHidden {

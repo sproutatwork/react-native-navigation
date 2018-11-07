@@ -157,6 +157,15 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
             viewController.navigationItem.hidesBackButton = YES;
         }
         
+        NSNumber *backButtonIntercept = actionParams[@"backButtonIntercept"];
+        BOOL backButtonInterceptBool = backButtonIntercept ? [backButtonIntercept boolValue] : NO;
+        viewController.shouldInterceptBackButton = backButtonInterceptBool;
+        
+        id backButton = actionParams[@"backButton"];
+        if (backButton) {
+            [self setButtons:@[ backButton ] viewController:viewController side:@"back" animated:NO];
+        }
+        
         NSArray *leftButtons = actionParams[@"leftButtons"];
         if (leftButtons) {
             [self setButtons:leftButtons viewController:viewController side:@"left" animated:NO];
@@ -407,7 +416,7 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
      }];
 }
 
--(void)setButtons:(NSArray*)buttons viewController:(UIViewController*)viewController side:(NSString*)side animated:(BOOL)animated {
+-(void)setButtons:(NSArray*)buttons viewController:(RCCViewController*)viewController side:(NSString*)side animated:(BOOL)animated {
     NSMutableArray *barButtonItems = [NSMutableArray new];
     for (NSDictionary *button in buttons) {
         NSString *title = button[@"title"];
@@ -430,6 +439,8 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
                 [barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateNormal];
                 [barButtonItem setTitleTextAttributes:buttonTextAttributes forState:UIControlStateHighlighted];
             }
+        } else if ([side isEqualToString:@"back"]) {
+            barButtonItem = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(onButtonPress:)];
         } else if (component) {
             RCTBridge *bridge = [[RCCManager sharedInstance] getBridge];
             barButtonItem = [[RCCCustomBarButtonItem alloc] initWithComponentName:component passProps:button[@"passProps"] bridge:bridge];
@@ -479,6 +490,11 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     if ([side isEqualToString:@"right"]) {
         [viewController.navigationItem setRightBarButtonItems:barButtonItems animated:animated];
     }
+    
+    if ([side isEqualToString:@"back"] && barButtonItems.count > 0)
+    {
+        viewController.backButtonItem = barButtonItems[0];
+    }
 }
 
 
@@ -512,6 +528,18 @@ NSString const *CALLBACK_ASSOCIATED_ID = @"RCCNavigationController.CALLBACK_ASSO
     _transitioning = YES;
     
     [super pushViewController:viewController animated:animated];
+}
+
+-(void)onPop {
+    RCCViewController *viewController = (RCCViewController *)self.visibleViewController;
+    NSString *type = viewController.shouldInterceptBackButton ? @"NavBackButtonIntercepted" : @"ViewPopped";
+    
+    NSString *callbackId = objc_getAssociatedObject(viewController.backButtonItem, &CALLBACK_ASSOCIATED_KEY);
+    if (!callbackId) return;
+    [[[RCCManager sharedInstance] getBridge].eventDispatcher sendAppEventWithName:callbackId body:@
+     {
+         @"type": type
+     }];
 }
 
 
