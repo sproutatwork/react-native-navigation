@@ -26,10 +26,15 @@ public class OverlayParamsParser extends Parser {
 
         result.top = (int) position.getDouble(POSITION_TOP, 0);
         result.left = (int) position.getDouble(POSITION_LEFT, 0);
-        if (result.top == 0 && result.left == 0) {
+
+        if (result.top == 0) {
             result.top = position.getInt(POSITION_TOP);
+        }
+
+        if (result.left == 0) {
             result.left = position.getInt(POSITION_LEFT);
         }
+
         result.width = position.getInt(POSITION_WIDTH);
         result.height = position.getInt(POSITION_HEIGHT);
 
