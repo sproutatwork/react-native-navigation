@@ -110,6 +110,8 @@ RCTRootView *overlayView;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
     if (!overlayView.hidden) {
         [self.view bringSubviewToFront:overlayView];
     }
