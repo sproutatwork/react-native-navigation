@@ -1,10 +1,6 @@
 /*eslint-disable*/
-import React, {Component} from 'react';
-import {
-  NativeAppEventEmitter,
-  DeviceEventEmitter,
-  Platform
-} from 'react-native';
+import { Component } from 'react';
+import { DeviceEventEmitter, NativeAppEventEmitter, Platform } from 'react-native';
 import platformSpecific from './deprecated/platformSpecificDeprecated';
 import Navigation from './Navigation';
 
@@ -117,6 +113,10 @@ class Navigator {
     return platformSpecific.navigatorSetTabButton(this, params);
   }
 
+  setOverlayTop(params = {}) {
+    return platformSpecific.setOverlayTop(this, params);
+  }
+
   switchToTab(params = {}) {
     return platformSpecific.navigatorSwitchToTab(this, params);
   }
@@ -224,7 +224,5 @@ class Screen extends Component {
   }
 }
 
-export {
-  Screen,
-  Navigator
-};
+export { Screen, Navigator };
+

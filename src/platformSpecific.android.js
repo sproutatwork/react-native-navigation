@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
-import {AppRegistry, NativeModules} from 'react-native';
 import _ from 'lodash';
+import { NativeModules } from 'react-native';
 import PropRegistry from './PropRegistry';
 
 const NativeReactModule = NativeModules.NavigationReactModule;
@@ -146,6 +145,10 @@ function selectBottomTabByNavigatorId(navigatorId) {
   NativeReactModule.selectBottomTabByNavigatorId(navigatorId);
 }
 
+function setOverlayTop(top) {
+  NativeReactModule.setOverlayTop(top);
+}
+
 function selectBottomTabByTabIndex(index) {
   NativeReactModule.selectBottomTabByTabIndex(index);
 }
@@ -226,6 +229,7 @@ module.exports = {
   setSideMenuVisible,
   setSideMenuEnabled,
   selectBottomTabByNavigatorId,
+  setOverlayTop,
   selectBottomTabByTabIndex,
   setBottomTabBadgeByNavigatorId,
   setBottomTabBadgeByIndex,

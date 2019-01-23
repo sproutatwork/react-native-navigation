@@ -1,14 +1,13 @@
 /*eslint-disable*/
-import React, {Component} from 'react';
-import ReactNative, {AppRegistry, NativeModules, processColor} from 'react-native';
 import _ from 'lodash';
+import { processColor } from 'react-native';
+import Navigation from './../Navigation';
+import * as newPlatformSpecific from './../platformSpecific';
 import PropRegistry from './../PropRegistry';
 
-import Navigation from './../Navigation';
 
 const resolveAssetSource = require('react-native/Libraries/Image/resolveAssetSource');
 
-import * as newPlatformSpecific from './../platformSpecific';
 
 async function startSingleScreenApp(params) {
   const components = params.components;
@@ -476,6 +475,10 @@ function navigatorSetStyle(navigator, params) {
   newPlatformSpecific.setScreenStyle(navigator.screenInstanceID, style);
 }
 
+function setOverlayTop(navigator, params) {
+  newPlatformSpecific.setOverlayTop(params);
+}
+
 function navigatorSwitchToTab(navigator, params) {
   if (params.tabIndex >= 0) {
     newPlatformSpecific.selectBottomTabByTabIndex(params.tabIndex);
@@ -849,6 +852,7 @@ export default {
   showLightBox,
   dismissLightBox,
   dismissInAppNotification,
+  setOverlayTop,
   navigatorSetButtons,
   navigatorSetTabBadge,
   navigatorSetTabButton,

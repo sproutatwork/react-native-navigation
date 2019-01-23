@@ -125,6 +125,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setOverlayTop(Integer top) {
+        NavigationCommandsHandler.setOverlayTop(top);
+    }
+
+    @ReactMethod
     public void selectBottomTabByTabIndex(Integer index) {
         NavigationCommandsHandler.selectBottomTabByTabIndex(index);
     }

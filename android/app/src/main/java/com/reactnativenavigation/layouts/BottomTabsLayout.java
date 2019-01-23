@@ -138,7 +138,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
 
     private void addOverlay() {
         if (params.overlayParams != null) {
-              overlayView = new ContentView(getContext(), params.overlayParams.screenId, params.overlayParams.navigationParams);
+            overlayView = new ContentView(getContext(), params.overlayParams.screenId, params.overlayParams.navigationParams);
             LayoutParams lp2 = new LayoutParams((int) (params.overlayParams.width * getResources().getDisplayMetrics().density), WRAP_CONTENT);
 
             DisplayMetrics metrics = new DisplayMetrics();
@@ -367,6 +367,12 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         return getCurrentScreenStack().peek();
     }
 
+    public void setOverlayTop(Integer top) {
+        if (params.overlayParams != null) {
+            overlayView.setY(top * getResources().getDisplayMetrics().density);
+        }
+    }
+
     public void selectBottomTabByTabIndex(Integer index) {
         if (bottomTabs.getCurrentItem() != index) {
             bottomTabs.setCurrentItemWithoutInvokingTabSelectedListener(index);
@@ -523,7 +529,7 @@ public class BottomTabsLayout extends BaseLayout implements AHBottomNavigation.O
         }
 
         final int unselectedTabIndex = currentStackIndex;
-        if(isTabIntercept(position)) {
+        if (isTabIntercept(position)) {
             sendTabSelectedEventToJs(position, unselectedTabIndex);
             return false;
         }

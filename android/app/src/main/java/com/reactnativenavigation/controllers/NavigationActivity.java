@@ -373,6 +373,12 @@ public class NavigationActivity extends AppCompatActivity implements DefaultHard
         modalController.selectTopTabByScreen(screenInstanceId);
     }
 
+    public void setOverlayTop(Integer top) {
+        if (layout instanceof BottomTabsLayout) {
+            ((BottomTabsLayout) layout).setOverlayTop(top);
+        }
+    }
+
     public void selectBottomTabByTabIndex(Integer index) {
         if (layout instanceof BottomTabsLayout) {
             ((BottomTabsLayout) layout).selectBottomTabByTabIndex(index);
