@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-
+import com.facebook.react.uimanager.UIImplementationProvider;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -33,7 +33,8 @@ public abstract class NavigationApplication extends Application implements React
         super.onCreate();
         instance = this;
         handler = new Handler(getMainLooper());
-        reactGateway = new NavigationReactGateway();
+        reactGateway = new NavigationReactGateway(getUIImplementationProvider());
+        // reactGateway = new NavigationReactGateway();
         eventEmitter = new EventEmitter(reactGateway);
         activityCallbacks = new ActivityCallbacks();
     }
@@ -52,6 +53,11 @@ public abstract class NavigationApplication extends Application implements React
         }
     }
 
+
+    // here in case someone wants to override this
+    protected UIImplementationProvider getUIImplementationProvider() {
+        return null; // if null the default UIImplementationProvider will be used
+    }
 
     public void startReactContextOnceInBackgroundAndExecuteJS() {
         reactGateway.startReactContextOnceInBackgroundAndExecuteJS();

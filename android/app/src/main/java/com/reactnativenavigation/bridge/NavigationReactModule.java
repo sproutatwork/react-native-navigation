@@ -9,7 +9,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
-import com.reactnativenavigation.controllers.NavigationActivity;
+// import com.reactnativenavigation.controllers.NavigationActivity;
 import com.reactnativenavigation.controllers.NavigationCommandsHandler;
 import com.reactnativenavigation.params.ContextualMenuParams;
 import com.reactnativenavigation.params.FabParams;
@@ -54,11 +54,11 @@ public class NavigationReactModule extends ReactContextBaseJavaModule {
         return NAME;
     }
 
-    @Override
-    public void onCatalystInstanceDestroy() {
-        super.onCatalystInstanceDestroy();
-        NavigationActivity.onCatalystInstanceDestroy();
-    }
+    // @Override
+    // public void onCatalystInstanceDestroy() {
+    //     super.onCatalystInstanceDestroy();
+    //     NavigationActivity.onCatalystInstanceDestroy();
+    // }
 
     @ReactMethod
     public void startApp(final ReadableMap params, final @Nullable Promise promise) {
