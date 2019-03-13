@@ -50,8 +50,6 @@ public class NavigationReactGateway implements ReactGateway {
 			host = new ReactNativeHostImpl();
 		}
 
-
-		host = new ReactNativeHostImpl();
 		jsDevReloadHandler = new JsDevReloadHandler();
 	}
 
