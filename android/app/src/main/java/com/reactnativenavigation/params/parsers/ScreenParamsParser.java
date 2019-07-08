@@ -29,7 +29,15 @@ public class ScreenParamsParser extends Parser {
     public static ScreenParams parse(Bundle params) {
         ScreenParams result = new ScreenParams();
         result.screenId = params.getString(KEY_SCREEN_ID);
-        result.timestamp = params.getDouble(KEY_TIMESTAMP);
+        // result.timestamp = params.getDouble(KEY_TIMESTAMP);
+
+        Object timestampObj = params.get(KEY_TIMESTAMP);
+        if(timestampObj instanceof Integer) {
+            result.timestamp = ((int) timestampObj) * 1.0;
+        } else if (timestampObj instanceof Double){
+            result.timestamp = (double) timestampObj;
+        }
+
         assertKeyExists(params, KEY_NAVIGATION_PARAMS);
         result.navigationParams = new NavigationParams(params.getBundle(KEY_NAVIGATION_PARAMS));
 
