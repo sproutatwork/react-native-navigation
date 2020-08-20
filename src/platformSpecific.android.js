@@ -11,16 +11,21 @@ async function startApp(activityParams) {
 }
 
 function push(screenParams) {
-  savePassProps(screenParams);
-  return NativeReactModule.push(screenParams);
+  const _params = { ...screenParams, animated: false };
+  savePassProps(_params);
+  return NativeReactModule.push(_params);
 }
 
 function pop(screenParams) {
-  NativeReactModule.pop(screenParams);
+  const _params = { ...screenParams, animated: false };
+  savePassProps(_params);
+  NativeReactModule.pop(_params);
 }
 
 function popToRoot(screenParams) {
-  NativeReactModule.popToRoot(screenParams);
+  const _params = { ...screenParams, animated: false };
+  savePassProps(_params);
+  NativeReactModule.popToRoot(_params);
 }
 
 function newStack(screenParams) {
@@ -49,8 +54,9 @@ function setScreenButtons(screenInstanceID, navigatorEventID, rightButtons, left
 }
 
 function showModal(screenParams) {
-  savePassProps(screenParams);
-  NativeReactModule.showModal(screenParams);
+  const _params = { ...screenParams, animationType: 'none' };
+  savePassProps(_params);
+  NativeReactModule.showModal(_params);
 }
 
 function showLightBox(params) {
@@ -63,7 +69,8 @@ function dismissLightBox() {
 }
 
 async function dismissTopModal(params) {
-  return await NativeReactModule.dismissTopModal(params);
+  const _params = { ...params, animationType: 'none' };
+  return await NativeReactModule.dismissTopModal(_params);
 }
 
 async function dismissAllModals() {
