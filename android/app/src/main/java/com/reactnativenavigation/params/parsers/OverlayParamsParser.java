@@ -15,6 +15,16 @@ public class OverlayParamsParser extends Parser {
     private static final String POSITION_WIDTH = "width";
     private static final String POSITION_HEIGHT = "height";
 
+    private static double toUnboxDouble(Object d) {
+        if(d instanceof Integer) {
+            return ((int) d) * 1.0;
+        }
+        else if (d instanceof Double){
+            return (double) d;
+        }
+        return 0.0;
+    }
+
     public static OverlayParams parse(Bundle params) {
         OverlayParams result = new OverlayParams();
 
@@ -24,8 +34,8 @@ public class OverlayParamsParser extends Parser {
 
         Bundle position = params.getBundle(POSITION);
 
-        result.top = (int) position.getDouble(POSITION_TOP, 0);
-        result.left = (int) position.getDouble(POSITION_LEFT, 0);
+        result.top = (int) toUnboxDouble(position.getDouble(POSITION_TOP, 0));
+        result.left = (int) toUnboxDouble(position.getDouble(POSITION_LEFT, 0));
         if (result.top == 0 && result.left == 0) {
             result.top = position.getInt(POSITION_TOP);
             result.left = position.getInt(POSITION_LEFT);
